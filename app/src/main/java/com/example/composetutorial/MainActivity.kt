@@ -8,14 +8,19 @@ import androidx.compose.animation.core.Spring
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.*
+import androidx.compose.material.MaterialTheme.shapes
+import androidx.compose.material.MaterialTheme.typography
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.composetutorial.ui.theme.ComposeTutorialTheme
 import androidx.compose.ui.unit.dp
@@ -30,16 +35,32 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+val Navy = Color(0xFF073042)
+val Blue = Color(0xFF4285F4)
+val LightBlue = Color(0xFFD7EFFE)
+val Chartreuse = Color(0xFFEFF7CF)
 
+private val LightColorPalette = lightColors(
+    surface = Blue,
+    onSurface = Color.White,
+    primary = LightBlue,
+    onPrimary = Navy
+)
+private val DarkColorPalette = darkColors(
+    surface = Blue,
+    onSurface = Navy,
+    primary = Navy,
+    onPrimary = Chartreuse
+)
 @Composable
-fun MyApp() {
+fun MyApp()
+     {
     var shouldShowOnboarding by rememberSaveable { mutableStateOf(true) }
     if (shouldShowOnboarding){
         OnboardingScreen(onContinueClicked = {shouldShowOnboarding=false})
     } else{
         Greetings()
     }
-
 }
 
 @Composable
@@ -82,7 +103,13 @@ fun Greeting(name: String) {
                     .padding(bottom = extraPadding)
             ) {
                 Text(text = "Hello,")
-                Text(text = name)
+                Text(
+                    text = name,
+                    style = MaterialTheme.typography.h4.copy(
+                        fontWeight = FontWeight.ExtraBold
+                    )
+                )
+
             }
             OutlinedButton(onClick = { expanded = !expanded}) {
                 Text(if(expanded) "Show Less" else "Show More")
@@ -111,8 +138,32 @@ fun OnboardingScreen(
     }
 }
 
-@Preview(showBackground = true, widthDp = 320, heightDp = 320,uiMode= UI_MODE_NIGHT_YES)
-@Preview(showBackground = true, widthDp = 320, heightDp = 320)
+@Composable
+fun ComposableTutorialTheme(
+    darkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable () -> Unit
+) {
+    val colors = if (darkTheme) {
+        DarkColorPalette
+    } else {
+        LightColorPalette
+    }
+
+    MaterialTheme(
+        colors = colors,
+        typography = typography,
+        shapes = shapes,
+        content = content
+    )
+}
+
+@Preview(
+    showBackground = true,
+    widthDp = 320,
+    heightDp = 320,
+    uiMode= UI_MODE_NIGHT_YES,
+    name = "DefaultPreviewDark"
+)
 @Composable
 fun OnboardingPreview() {
     ComposeTutorialTheme {
@@ -120,15 +171,25 @@ fun OnboardingPreview() {
     }
 }
 
-@Composable
-fun ComposableTutorialTheme(function: () -> Unit) {
-
-}
-
-@Preview(showBackground = true)
+@Preview(
+    showBackground = true,
+    widthDp = 320,
+    heightDp = 320,
+    uiMode= UI_MODE_NIGHT_YES,
+    name = "DefaultPreviewDark"
+)
 @Composable
 fun DefaultPreview() {
-    ComposeTutorialTheme {
+    ComposableTutorialTheme() {
+        Greetings()
         MyApp()
+
     }
 }
+//@Preview(showBackground = true, widthDp = 320)
+//@Composable
+//fun DefaultPreview() {
+//    ComposeTutorialTheme {
+//        MyApp()
+//    }
+//}
