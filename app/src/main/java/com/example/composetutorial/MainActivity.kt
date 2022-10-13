@@ -89,7 +89,7 @@ fun OnboardingScreen(
     }
 }
 @Composable
-fun Greetings(names:List<String> = List(100) {"$it"}) {
+fun Greetings(names:List<String> = List(10) {"$it"}) {
     // A surface container using the 'background' color from the theme
     Surface(modifier = Modifier.fillMaxSize(), color = MaterialTheme.colors.background) {
         Column(modifier = Modifier.padding()) {
